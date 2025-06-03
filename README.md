@@ -1,4 +1,8 @@
 # Information-Security
+## Projects
+
+- [SecureGamerShield](./SecureGamerShield/)
+
 # ANALYZE RATIO – PRIVACY POLICY
 ![image](https://github.com/user-attachments/assets/240daefb-bdd1-4ba0-83ee-1599edcb949b)
 ![image](https://github.com/user-attachments/assets/b5891936-514a-4300-982a-d53e8eb9779d)
