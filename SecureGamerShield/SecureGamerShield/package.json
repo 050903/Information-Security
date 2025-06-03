@@ -1,0 +1,17 @@
+{
+  "name": "securegamershield",
+  "version": "1.0.0",
+  "description": "SecureGamer is a comprehensive privacy education and data protection platform designed specifically for video game players. Built with Streamlit and PostgreSQL, it provides interactive tools for privacy assessment, education, and secure data management using enterprise-grade encryption.",
+  "main": "index.js",
+  "scripts": {
+  "dev": "cross-env NODE_ENV=development tsx server/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "tsx": "^4.19.4",
+    "vite": "^6.3.5"
+  }
+}

@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureGamer - Privacy Protection Platform</title>
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <script src="./js/mermaid-init.js"></script>  Removed: Initialization is handled at the end of the body -->
+    <link href="./css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.3/dist/mermaid.min.js"></script>
+    <style>
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .slide.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .architecture-diagram {
+            background-color: #f8fafc;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .system-flow {
+            width: 100%;
+            /* height: 400px; Removed to allow diagrams to auto-size vertically */
+            background-color: #f8fafc;
+            border-radius: 1rem;
+            padding: 1rem;
+            display: flex; /* Added to help center mermaid diagrams if they are smaller than container */
+            justify-content: center; /* Added for centering */
+            align-items: center; /* Added for centering */
+        }
+        .tech-card {
+            transition: all 0.3s ease;
+        }
+        .tech-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #3b82f6;
+        }
+        .mermaid svg { /* Ensure mermaid SVGs can scale nicely */
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-10">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-shield-alt text-blue-500 text-2xl mr-2"></i>
+                    <span class="font-bold text-xl text-gray-800">SecureGamer</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="nav-link" data-slide="0">Overview</a>
+                    <a href="#" class="nav-link" data-slide="1">Architecture</a>
+                    <a href="#" class="nav-link" data-slide="2">Encryption</a>
+                    <a href="#" class="nav-link" data-slide="3">Features</a>
+                    <a href="#" class="nav-link" data-slide="4">Flow</a>
+                </div>
+                <button class="md:hidden text-gray-500 focus:outline-none" id="mobile-menu-button">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden bg-white w-full px-4 py-2 shadow-lg" id="mobile-menu">
+            <a href="#" class="block py-2 nav-link" data-slide="0">Overview</a>
+            <a href="#" class="block py-2 nav-link" data-slide="1">Architecture</a>
+            <a href="#" class="block py-2 nav-link" data-slide="2">Encryption</a>
+            <a href="#" class="block py-2 nav-link" data-slide="3">Features</a>
+            <a href="#" class="block py-2 nav-link" data-slide="4">Flow</a>
+        </div>
+    </nav>
+
+    <!-- Slides Container -->
+    <div class="pt-20 pb-10 max-w-6xl mx-auto px-4">
+        <!-- Slide 1: Overview -->
+        <div class="slide active" id="slide-0">
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-8 text-white mb-8 shadow-lg">
+                <h1 class="text-4xl font-bold mb-4">SecureGamer</h1>
+                <p class="text-xl mb-6">Comprehensive Privacy Protection Platform for Gamers</p>
+                <div class="flex flex-wrap gap-4">
+                    <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full">Data Encryption</span>
+                    <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full">Privacy Education</span>
+                    <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full">GDPR Compliance</span>
+                    <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full">Risk Assessment</span>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h2 class="text-2xl font-bold mb-4 text-gray-800">Project Goals</h2>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Build educational platform for gamer privacy</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Provide risk assessment and management tools</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Comply with GDPR and CCPA regulations</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Create secure environment for game data</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h2 class="text-2xl font-bold mb-4 text-gray-800">Target Users</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <i class="fas fa-user text-blue-500 mb-2"></i>
+                            <h3 class="font-semibold">Individual Gamers</h3>
+                        </div>
+                        <div class="bg-indigo-50 p-4 rounded-lg">
+                            <i class="fas fa-users text-indigo-500 mb-2"></i>
+                            <h3 class="font-semibold">Gaming Communities</h3>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <i class="fas fa-code text-purple-500 mb-2"></i>
+                            <h3 class="font-semibold">Game Developers</h3>
+                        </div>
+                        <div class="bg-cyan-50 p-4 rounded-lg">
+                            <i class="fas fa-shield-alt text-cyan-500 mb-2"></i>
+                            <h3 class="font-semibold">System Admins</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Frontend Modules</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap font-medium">Privacy Assessment</td>
+                                <td class="px-6 py-4">Evaluate user privacy risks and vulnerabilities</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap font-medium">Education Center</td>
+                                <td class="px-6 py-4">Interactive learning about privacy protection</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap font-medium">Privacy Checklist</td>
+                                <td class="px-6 py-4">Step-by-step guide to secure gaming</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap font-medium">Data Dashboard</td>
+                                <td class="px-6 py-4">Visualize and manage personal data</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Architecture -->
+        <div class="slide" id="slide-1">
+            <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+                <h2 class="text-3xl font-bold mb-6 text-gray-800">System Architecture</h2>
+                
+                <div class="architecture-diagram mb-8">
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-semibold text-gray-700">Three-Tier Secure Architecture</h3>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Frontend -->
+                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-desktop text-blue-500 mr-2 text-xl"></i>
+                                <h4 class="font-bold text-lg">Frontend Layer</h4>
+                            </div>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-blue-400 mr-2 mt-1"></i>
+                                    <span>Streamlit Interactive UI</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-blue-400 mr-2 mt-1"></i>
+                                    <span>Privacy Assessment Tools</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-blue-400 mr-2 mt-1"></i>
+                                    <span>Educational Modules</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-blue-400 mr-2 mt-1"></i>
+                                    <span>Data Visualization</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Backend -->
+                        <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-server text-indigo-500 mr-2 text-xl"></i>
+                                <h4 class="font-bold text-lg">Security Layer</h4>
+                            </div>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-indigo-400 mr-2 mt-1"></i>
+                                    <span>EncryptionManager</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-indigo-400 mr-2 mt-1"></i>
+                                    <span>GameDataSecurityManager</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-indigo-400 mr-2 mt-1"></i>
+                                    <span>SecureGameDataDB</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-indigo-400 mr-2 mt-1"></i>
+                                    <span>Session Management</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Database -->
+                        <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-database text-purple-500 mr-2 text-xl"></i>
+                                <h4 class="font-bold text-lg">Database Layer</h4>
+                            </div>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-purple-400 mr-2 mt-1"></i>
+                                    <span>PostgreSQL</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-purple-400 mr-2 mt-1"></i>
+                                    <span>Encrypted Storage</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-purple-400 mr-2 mt-1"></i>
+                                    <span>User Data Tables</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-purple-400 mr-2 mt-1"></i>
+                                    <span>Audit Logs</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-lg mb-8">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-700">Database Schema</h3>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                            <h4 class="font-bold text-blue-600 mb-2">users</h4>
+                            <ul class="text-sm space-y-1">
+                                <li>user_id (PK)</li>
+                                <li>username</li>
+                                <li>password_hash</li>
+                                <li>email</li>
+                                <li>created_at</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                            <h4 class="font-bold text-indigo-600 mb-2">encrypted_game_data</h4>
+                            <ul class="text-sm space-y-1">
+                                <li>data_id (PK)</li>
+                                <li>user_id (FK)</li>
+                                <li>encrypted_data</li>
+                                <li>encryption_key</li>
+                                <li>iv</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                            <h4 class="font-bold text-purple-600 mb-2">privacy_assessments</h4>
+                            <ul class="text-sm space-y-1">
+                                <li>assessment_id (PK)</li>
+                                <li>user_id (FK)</li>
+                                <li>risk_score</li>
+                                <li>recommendations</li>
+                                <li>completed_at</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                            <h4 class="font-bold text-cyan-600 mb-2">security_audit_log</h4>
+                            <ul class="text-sm space-y-1">
+                                <li>log_id (PK)</li>
+                                <li>user_id (FK)</li>
+                                <li>action</li>
+                                <li>ip_address</li>
+                                <li>timestamp</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-700">Security Components</h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-bold text-blue-600 mb-2">EncryptionManager</h4>
+                            <ul class="text-sm space-y-2">
+                                <li>Key generation</li>
+                                <li>Data encryption/decryption</li>
+                                <li>Hashing with salt</li>
+                                <li>Data validation</li>
+                            </ul>
+                        </div>
+                        <div class="border-l-4 border-indigo-500 pl-4">
+                            <h4 class="font-bold text-indigo-600 mb-2">GameDataSecurityManager</h4>
+                            <ul class="text-sm space-y-2">
+                                <li>Secure data processing</li>
+                                <li>Session management</li>
+                                <li>Access control</li>
+                                <li>Security logging</li>
+                            </ul>
+                        </div>
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-bold text-purple-600 mb-2">SecureGameDataDB</h4>
+                            <ul class="text-sm space-y-2">
+                                <li>Secure queries</li>
+                                <li>Transaction control</li>
+                                <li>Backup management</li>
+                                <li>Data recovery</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Encryption -->
+        <div class="slide" id="slide-2">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-3xl font-bold mb-6 text-gray-800">Encryption Technologies</h2>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <!-- AES-256-GCM -->
+                    <div class="tech-card bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:border-blue-500">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-lock text-blue-500 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">AES-256-GCM</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Advanced Encryption Standard with Galois/Counter Mode</p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-700 mb-2">Process:</h4>
+                            <ol class="list-decimal list-inside text-sm space-y-1">
+                                <li>Generate random 256-bit key</li>
+                                <li>Create initialization vector (IV)</li>
+                                <li>Encrypt data with AES-256</li>
+                                <li>Generate authentication tag</li>
+                                <li>Combine IV, ciphertext and tag</li>
+                            </ol>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">Fast</span>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">Secure</span>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">Industry Standard</span>
+                        </div>
+                    </div>
+                    
+                    <!-- PBKDF2-SHA256 -->
+                    <div class="tech-card bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:border-indigo-500">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-key text-indigo-500 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">PBKDF2-SHA256</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Password-Based Key Derivation Function</p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-700 mb-2">Process:</h4>
+                            <ol class="list-decimal list-inside text-sm space-y-1">
+                                <li>Generate random salt</li>
+                                <li>Combine password and salt</li>
+                                <li>Iterate hash 100,000 times</li>
+                                <li>Produce final key</li>
+                            </ol>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-indigo-100 text-indigo-800 text-xs px-3 py-1 rounded-full">Brute-force resistant</span>
+                            <span class="bg-indigo-100 text-indigo-800 text-xs px-3 py-1 rounded-full">Rainbow table proof</span>
+                            <span class="bg-indigo-100 text-indigo-800 text-xs px-3 py-1 rounded-full">Secure</span>
+                        </div>
+                    </div>
+                    
+                    <!-- BLAKE3 -->
+                    <div class="tech-card bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:border-purple-500">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-purple-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-fingerprint text-purple-500 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">BLAKE3</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Modern Hashing Algorithm with Parallel Processing</p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-700 mb-2">Process:</h4>
+                            <ol class="list-decimal list-inside text-sm space-y-1">
+                                <li>Divide data into blocks</li>
+                                <li>Parallel processing of blocks</li>
+                                <li>Combine results</li>
+                                <li>Produce final hash</li>
+                            </ol>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Fast</span>
+                            <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Parallel</span>
+                            <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Modern</span>
+                        </div>
+                    </div>
+                    
+                    <!-- SHA-256 -->
+                    <div class="tech-card bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:border-green-500">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-green-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-hashtag text-green-500 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">SHA-256</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Secure Hash Algorithm 256-bit</p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-700 mb-2">Process:</h4>
+                            <ol class="list-decimal list-inside text-sm space-y-1">
+                                <li>Divide data into blocks</li>
+                                <li>Process each block</li>
+                                <li>Combine results</li>
+                                <li>Produce final hash</li>
+                            </ol>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">Industry Standard</span>
+                            <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">Reliable</span>
+                            <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">Widely Used</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+                    <h3 class="text-2xl font-bold mb-6 text-gray-800">Encryption Process Comparison</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Technology</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Key Size</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Speed</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Security</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Use Case</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium">AES-256-GCM</td>
+                                    <td class="px-6 py-4">256-bit</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <div class="w-24 bg-gray-200 rounded-full h-2.5">
+                                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 85%"></div>
+                                            </div>
+                                            <span class="ml-2 text-sm">Fast</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">High</span>
+                                    </td>
+                                    <td class="px-6 py-4">Data encryption</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium">PBKDF2-SHA256</td>
+                                    <td class="px-6 py-4">Variable</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <div class="w-24 bg-gray-200 rounded-full h-2.5">
+                                                <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 40%"></div>
+                                            </div>
+                                            <span class="ml-2 text-sm">Slow</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">High</span>
+                                    </td>
+                                    <td class="px-6 py-4">Password hashing</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium">BLAKE3</td>
+                                    <td class="px-6 py-4">Variable</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <div class="w-24 bg-gray-200 rounded-full h-2.5">
+                                                <div class="bg-purple-600 h-2.5 rounded-full" style="width: 95%"></div>
+                                            </div>
+                                            <span class="ml-2 text-sm">Very Fast</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">High</span>
+                                    </td>
+                                    <td class="px-6 py-4">Data integrity</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium">SHA-256</td>
+                                    <td class="px-6 py-4">256-bit</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <div class="w-24 bg-gray-200 rounded-full h-2.5">
+                                                <div class="bg-green-600 h-2.5 rounded-full" style="width: 75%"></div>
+                                            </div>
+                                            <span class="ml-2 text-sm">Medium</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">High</span>
+                                    </td>
+                                    <td class="px-6 py-4">General hashing</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Features -->
+        <div class="slide" id="slide-3">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-3xl font-bold mb-6 text-gray-800">Security Features</h2>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-blue-50 p-6 rounded-xl">
+                        <div class="feature-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Data Protection</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                                <span>Encryption at rest and in transit</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                                <span>Data integrity verification</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                                <span>Secure key management</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-blue-500 mt-1 mr-2"></i>
+                                <span>Encrypted backups</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-indigo-50 p-6 rounded-xl">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Session Management</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
+                                <span>Secure user authentication</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
+                                <span>Token-based sessions</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
+                                <span>Automatic timeout</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-indigo-500 mt-1 mr-2"></i>
+                                <span>Activity logging</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-50 p-6 rounded-xl">
+                        <div class="feature-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Access Control</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                <span>Role-based permissions</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                <span>Access verification</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                <span>Detailed access logs</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-purple-500 mt-1 mr-2"></i>
+                                <span>Anomaly detection</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-xl">
+                        <div class="feature-icon">
+                            <i class="fas fa-gavel"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Compliance</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>GDPR compliance</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>CCPA compliance</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Privacy protection</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Consent management</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+                    <h3 class="text-2xl font-bold mb-6 text-gray-800">Security Processes</h3>
+                    <div class="grid md:grid-cols-4 gap-6">
+                        <div class="text-center">
+                            <div class="bg-blue-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3">
+                                <span class="text-blue-600 font-bold text-xl">1</span>
+                            </div>
+                            <h4 class="font-semibold mb-2">User Registration</h4>
+                            <p class="text-sm text-gray-600">Secure collection and storage of user data</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-indigo-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3">
+                                <span class="text-indigo-600 font-bold text-xl">2</span>
+                            </div>
+                            <h4 class="font-semibold mb-2">Login Process</h4>
+                            <p class="text-sm text-gray-600">Multi-factor authentication and session management</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-purple-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3">
+                                <span class="text-purple-600 font-bold text-xl">3</span>
+                            </div>
+                            <h4 class="font-semibold mb-2">Data Handling</h4>
+                            <p class="text-sm text-gray-600">Encrypted processing and storage of game data</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-green-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3">
+                                <span class="text-green-600 font-bold text-xl">4</span>
+                            </div>
+                            <h4 class="font-semibold mb-2">Backup & Recovery</h4>
+                            <p class="text-sm text-gray-600">Secure encrypted backups and recovery procedures</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-bold mb-6 text-gray-800">Education & Training</h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-blue-600 mb-2">Education Modules</h4>
+                            <ul class="text-sm space-y-2">
+                                <li>Basic security knowledge</li>
+                                <li>Gaming privacy rights</li>
+                                <li>Account protection</li>
+                                <li>Data management</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-indigo-600 mb-2">Risk Assessment</h4>
+                            <ul class="text-sm space-y-2">
+                                <li>Security checks</li>
+                                <li>Risk analysis</li>
+                                <li>Improvement suggestions</li>
+                                <li>Progress tracking</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-purple-600 mb-2">Practical Tools</h4>
+                            <ul class="text-sm space-y-2">
+                                <li>Encryption demos</li>
+                                <li>Attack simulations</li>
+                                <li>Hands-on exercises</li>
+                                <li>Knowledge tests</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Flow -->
+        <div class="slide" id="slide-4">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-3xl font-bold mb-6 text-gray-800">System Flow & Diagrams</h2>
+                
+                <div class="bg-gray-50 p-6 rounded-lg mb-8">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-700">System Architecture Diagram</h3>
+                    <div class="system-flow" id="architecture-diagram">
+                        <!-- This will be rendered by Mermaid -->
+                        <div class="mermaid">
+graph TD
+    A[User] -->|Interacts with| B[Frontend Layer Entry]
+    B -->|Secure API Calls| C[Backend Security Layer Entry]
+    C -->|Encrypted Queries| D[Database Layer Entry]
+
+    subgraph Frontend
+        B1[Dashboard]
+        B2[Privacy Assessment]
+        B3[Education Center]
+        B4[Data Visualization]
+    end
+    B --> B1
+    B --> B2
+    B --> B3
+    B --> B4
+
+    subgraph Backend
+        C1[EncryptionManager]
+        C2[GameDataSecurityManager]
+        C3[SecureGameDataDB]
+    end
+    C --> C1
+    C --> C2
+    C --> C3
+
+    subgraph Database
+        D1[Users Table]
+        D2[Encrypted Data Table]
+        D3[Assessments Table]
+        D4[Audit Logs Table]
+    end
+    D --> D1
+    D --> D2
+    D --> D3
+    D --> D4
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-lg mb-8">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-700">User Registration Flow</h3>
+                    <div class="system-flow" id="registration-flow">
+                        <div class="mermaid">
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant Backend
+    participant Database
+
+    User->>Frontend: Enters registration details
+    Frontend->>Backend: Sends user data
+    Backend->>Backend: Validates input
+    Backend->>Backend: Generates password hash (PBKDF2)
+    Backend->>Database: Stores encrypted user record
+    Database-->>Backend: Confirms storage
+    Backend-->>Frontend: Returns success
+    Frontend-->>User: Shows confirmation
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-lg mb-8">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-700">Data Encryption Process</h3>
+                    <div class="system-flow" id="encryption-flow">
+                        <div class="mermaid">
+flowchart LR
+    A[Raw Game Data] --> B{Encryption Process}
+    B --> C[Generate AES-256 Key]
+    B --> D[Generate IV]
+    C --> E[Encrypt Data]
+    D --> E
+    E --> F[Generate Auth Tag]
+    E --> G[Ciphertext]
+    F --> H[Combine IV + Ciphertext + Tag]
+    G --> H
+    H --> I[Encrypted Data Storage]
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-700">Privacy Assessment Flow</h3>
+                    <div class="system-flow" id="assessment-flow">
+                        <div class="mermaid">
+journey
+    title Privacy Assessment Journey
+    section Start Assessment
+      User clicks "Start Assessment": 5: User
+      System loads questions: 3: System
+    section Answer Questions
+      User answers privacy questions: 8: User
+      System validates responses: 2: System
+    section Generate Report
+      System calculates risk score: 4: System
+      System generates recommendations: 5: System
+    section View Results
+      User views assessment results: 7: User
+      User saves/downloads report: 6: User
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="fixed bottom-4 right-4 flex space-x-2">
+        <button id="prev-btn" class="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-full shadow-lg">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <button id="next-btn" class="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-full shadow-lg">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            },
+            sequenceDiagram: {
+                mirrorActors: false,
+                useMaxWidth: true
+            },
+            journey: { // Added basic config for journey, though defaults are usually fine
+                useMaxWidth: true
+            }
+        });
+
+        // Slide navigation
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function showSlide(index) {
+            // Hide all slides
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            // Show the selected slide
+            slides[index].classList.add('active');
+            
+            // Update active nav link
+            navLinks.forEach(link => link.classList.remove('font-bold', 'text-blue-600'));
+            navLinks.forEach(link => {
+                if (parseInt(link.dataset.slide) === index) {
+                    link.classList.add('font-bold', 'text-blue-600');
+                }
+            });
+            
+            currentSlide = index;
+            
+            // QUAN TRỌNG: Bỏ comment dòng dưới đây
+            if (typeof mermaid !== 'undefined') {
+               mermaid.contentLoaded(); // Yêu cầu Mermaid render lại khi slide hiển thị
+            }
+        }
+        // Navigation buttons
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            const prevSlide = currentSlide - 1 < 0 ? slides.length - 1 : currentSlide - 1;
+            showSlide(prevSlide);
+        });
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            const nextSlide = currentSlide + 1 >= slides.length ? 0 : currentSlide + 1;
+            showSlide(nextSlide);
+        });
+
+        // Nav link clicks
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const slideIndex = parseInt(link.dataset.slide);
+                showSlide(slideIndex);
+            });
+        });
+
+        // Mobile menu toggle
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Initialize first slide
+        showSlide(0);
+    </script>
+</body>
+</html>
