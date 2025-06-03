@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureGamer: Interactive Guide to Gaming Cryptography</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Visualization & Content Choices: [
+        - Key Types (Symmetric/Asymmetric): Goal: Compare. Viz: Side-by-side HTML cards with Unicode icons (🔑, 🔑+🔓). Interaction: Click-to-expand details via simple JS toggle. Justification: Clear differentiation of core concepts. Method: HTML/CSS/JS.
+        - Algorithms (AES, RSA, SHA): Goal: Inform. Viz: HTML Info cards within relevant sections. Interaction: Static display of key facts. Justification: Concise presentation of technical details. Method: HTML/CSS.
+        - Encryption Importance: Goal: Inform/Compare. Viz: Chart.js Donut Chart (Canvas) showing aspects like 'Player Protection', 'Transaction Integrity', 'Fair Play', 'Regulatory Compliance', 'Threat Mitigation', 'Building Trust'. Data is illustrative, representing areas of impact. Interaction: Tooltips. Justification: Visual impact of benefits. Method: Chart.js.
+        - Data Flow (e.g., TLS for Data in Transit): Goal: Organize/Show Change. Viz: Simplified HTML/CSS diagram using Tailwind for layout (boxes, Unicode arrows). Interaction: Static. Justification: Illustrate process simply without SVG/Mermaid. Method: HTML/CSS/Tailwind.
+        - All visualizations and diagrams are implemented using HTML/CSS/Tailwind or Chart.js (Canvas), strictly avoiding SVG and Mermaid JS.
+    ] -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            color: #212529;
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #007BFF;
+            font-weight: 600;
+        }
+        .section-title {
+            color: #007BFF;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .tab-button {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: #007BFF;
+            color: white;
+        }
+        .details-expand {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .details-expand.open {
+            max-height: 1000px; /* Adjust as needed for content */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            min-height: 300px; /* Ensure minimum height */
+            margin-left: auto;
+            margin-right: auto;
+        }
+         @media (min-width: 768px) {
+            .chart-container {
+                min-height: 350px; /* Taller on medium screens */
+            }
+        }
+        .llm-button {
+            background-color: #28A745; /* Green */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .llm-button:hover {
+            background-color: #218838;
+        }
+        .llm-output {
+            background-color: #F7FAFC; /* Light Gray */
+            border: 1px solid #E2E8F0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            min-height: 5rem;
+            margin-top: 1rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007BFF;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 0.5rem;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">SecureGamer Crypto Guide</h1>
+            <div class="space-x-4 text-sm md:text-base">
+                <a href="#introduction" class="nav-link">Introduction</a>
+                <a href="#key-types" class="nav-link">Key Types</a>
+                <a href="#gaming-applications" class="nav-link">Gaming Applications</a>
+                <a href="#encryption-methods" class="nav-link">Encryption Methods</a>
+                <a href="#importance" class="nav-link">Importance</a>
+                <a href="#ai-learning" class="nav-link">AI Learning</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6 py-8">
+
+        <section id="introduction" class="mb-16 pt-16 -mt-16">
+            <div class="card p-6 md:p-8">
+                <h2 class="text-3xl font-bold mb-6 section-title text-center">Welcome to the SecureGamer Crypto Guide</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                    This interactive guide explores the fundamental cryptographic principles that underpin the SecureGamer platform and protect players in the online gaming world. As gaming evolves, so do the threats. Understanding how encryption and security keys work is crucial for appreciating the measures taken to safeguard your data and ensure a fair, secure gaming experience.
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed">
+                    Here, you'll learn about different types of cryptographic keys, their applications in gaming environments, common encryption methods, and why robust data protection is indispensable for the modern gamer. Let's dive into the world of digital security!
+                </p>
+            </div>
+        </section>
+
+        <section id="key-types" class="mb-16 pt-16 -mt-16">
+            <div class="card p-6 md:p-8">
+                <h2 class="text-3xl font-bold mb-8 section-title text-center">Understanding Cryptographic Keys</h2>
+                <p class="text-gray-700 leading-relaxed mb-6 text-center">Cryptographic keys are secret pieces of information that control the operation of encryption and decryption algorithms. They come in various forms, each suited for different security tasks. The main distinction is between Symmetric and Asymmetric keys.</p>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <div class="border p-6 rounded-lg shadow-sm hover:shadow-lg transition-shadow">
+                        <h3 class="text-2xl font-semibold mb-3 text-gray-800 flex items-center">
+                            <span class="text-2xl mr-2">🔑</span> Symmetric Keys
+                        </h3>
+                        <p class="text-gray-600 mb-3">Utilize a <span class="font-semibold">single, shared secret key</span> for both encrypting and decrypting data. Think of it like a single key that locks and unlocks a specific chest.</p>
+                        <button onclick="toggleDetails('symmetricDetails')" class="text-blue-600 hover:text-blue-800 font-medium text-sm">Learn More &darr;</button>
+                        <div id="symmetricDetails" class="details-expand mt-3 text-sm text-gray-600">
+                            <p class="mb-2"><span class="font-semibold">Characteristics:</span> Generally faster and more efficient, ideal for large data volumes. Secure distribution of the shared key is critical.</p>
+                            <p><span class="font-semibold">Common Algorithms:</span> AES (Advanced Encryption Standard), 3DES, Blowfish.</p>
+                        </div>
+                    </div>
+
+                    <div class="border p-6 rounded-lg shadow-sm hover:shadow-lg transition-shadow">
+                        <h3 class="text-2xl font-semibold mb-3 text-gray-800 flex items-center">
+                            <span class="text-2xl mr-2">🔑<span class="text-green-500">+</span>🔓</span> Asymmetric Keys (Public Key Cryptography)
+                        </h3>
+                        <p class="text-gray-600 mb-3">Employ a <span class="font-semibold">pair of keys</span>: a public key (for encryption, shared openly) and a private key (for decryption, kept secret). Like a mailbox with a public slot for dropping mail and a private key to open it.</p>
+                        <button onclick="toggleDetails('asymmetricDetails')" class="text-blue-600 hover:text-blue-800 font-medium text-sm">Learn More &darr;</button>
+                        <div id="asymmetricDetails" class="details-expand mt-3 text-sm text-gray-600">
+                            <p class="mb-2"><span class="font-semibold">Characteristics:</span> Stronger security for key distribution as the private key is never shared. Slower than symmetric encryption.</p>
+                            <p><span class="font-semibold">Common Algorithms:</span> RSA (Rivest-Shamir-Adleman), ECC (Elliptic Curve Cryptography).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-4 mt-8 text-gray-800 text-center">Other Key Classifications & Concepts</h3>
+                 <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-lg mb-2 text-gray-700">Static vs. Ephemeral Keys</h4>
+                        <p class="text-sm text-gray-600"><span class="font-medium">Static keys</span> are for long-term use (days to years), while <span class="font-medium">ephemeral keys</span> are for single sessions/transactions, enhancing security by limiting the key's lifespan.</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-lg mb-2 text-gray-700">Key Functions (DEK, KEK)</h4>
+                        <p class="text-sm text-gray-600"><span class="font-medium">Data Encryption Keys (DEKs)</span> directly encrypt/decrypt data. <span class="font-medium">Key Encryption Keys (KEKs)</span> encrypt other keys (like DEKs) for secure storage or transport.</p>
+                    </div>
+                 </div>
+
+                <div class="mt-8 bg-indigo-50 p-6 rounded-lg">
+                     <h3 class="text-2xl font-semibold mb-4 text-indigo-700 text-center">Hashing: Not Encryption, But Vital for Integrity</h3>
+                     <p class="text-gray-700 leading-relaxed mb-2">
+                        Cryptographic Hash Functions (e.g., SHA-256) are different from encryption. They create a unique, fixed-size "fingerprint" (hash) of data. This process is one-way (irreversible).
+                     </p>
+                     <p class="text-gray-700 leading-relaxed">
+                        <span class="font-semibold">Key Uses:</span> Verifying data integrity (ensuring data hasn't been tampered with) and securely storing passwords (by hashing them instead of storing plaintext).
+                     </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="gaming-applications" class="mb-16 pt-16 -mt-16">
+            <div class="card p-6 md:p-8">
+                <h2 class="text-3xl font-bold mb-8 section-title text-center">Cryptography in the Gaming Arena</h2>
+                <p class="text-gray-700 leading-relaxed mb-6 text-center">Cryptographic keys and techniques are not just theoretical; they are actively used to secure various aspects of online gaming, from your account details to valuable in-game items.</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-green-50 p-4 rounded-lg shadow-sm">
+                        <h4 class="font-semibold text-lg mb-2 text-green-700">Player Data Encryption</h4>
+                        <p class="text-sm text-gray-600">Symmetric (e.g., AES) and asymmetric (e.g., RSA) encryption protect player credentials, financial information, and personal details from unauthorized access.</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg shadow-sm">
+                        <h4 class="font-semibold text-lg mb-2 text-green-700">Blockchain & Virtual Assets</h4>
+                        <p class="text-sm text-gray-600">Cryptographic hashes secure blockchain transactions for in-game currencies and items. Public/private keys (asymmetric) prove ownership of these digital assets.</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg shadow-sm">
+                        <h4 class="font-semibold text-lg mb-2 text-green-700">Digital Signatures</h4>
+                        <p class="text-sm text-gray-600">Using asymmetric cryptography, digital signatures verify the authenticity and integrity of game updates, downloads, and in-game transactions.</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg shadow-sm">
+                        <h4 class="font-semibold text-lg mb-2 text-green-700">NFT Ownership</h4>
+                        <p class="text-sm text-gray-600">Non-Fungible Tokens (NFTs) representing unique in-game items leverage cryptography to verify ownership and prevent duplication on a blockchain.</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg shadow-sm">
+                        <h4 class="font-semibold text-lg mb-2 text-green-700">Secure In-Game Wallets</h4>
+                        <p class="text-sm text-gray-600">Wallets holding virtual currencies or items use robust cryptographic methods to protect private keys, ensuring only the owner can access their assets.</p>
+                    </div>
+                     <div class="bg-green-50 p-4 rounded-lg shadow-sm">
+                        <h4 class="font-semibold text-lg mb-2 text-green-700">Secure Communications</h4>
+                        <p class="text-sm text-gray-600">Encryption (often using TLS with symmetric and asymmetric keys) protects in-game chat and voice communications from eavesdropping.</p>
+                    </div>
+                </div>
+                 <p class="text-center text-gray-600 mt-8 text-sm">These applications demonstrate how cryptography forms a foundational layer of security and trust in the digital gaming world.</p>
+            </div>
+        </section>
+
+        <section id="encryption-methods" class="mb-16 pt-16 -mt-16">
+            <div class="card p-6 md:p-8">
+                <h2 class="text-3xl font-bold mb-8 section-title text-center">How Game Data is Encrypted</h2>
+                <p class="text-gray-700 leading-relaxed mb-6 text-center">Game data exists in different states, and each requires specific encryption strategies to maintain confidentiality and integrity. The two primary states are "Data at Rest" and "Data in Transit".</p>
+
+                <div class="mb-8">
+                    <div class="flex justify-center mb-4 border-b">
+                        <button id="tabBtnRest" class="tab-button py-2 px-4 -mb-px border-b-2 border-transparent font-medium" onclick="showTab('rest')">Data at Rest</button>
+                        <button id="tabBtnTransit" class="tab-button py-2 px-4 -mb-px border-b-2 border-transparent font-medium" onclick="showTab('transit')">Data in Transit</button>
+                    </div>
+
+                    <div id="contentRest" class="tab-content p-4 bg-gray-50 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800">🛡️ Data at Rest Encryption (DARE)</h3>
+                        <p class="text-gray-600 mb-2">This refers to data stored physically, like game saves on your hard drive, player profiles on a server database, or cloud backups.</p>
+                        <p class="text-gray-600 mb-2"><span class="font-semibold">Why it's important:</span> Stored data is a prime target for attackers. DARE makes this data unreadable even if accessed illicitly.</p>
+                        <p class="text-gray-600 mb-2"><span class="font-semibold">How it works:</span> Algorithms like AES are commonly used to encrypt the data itself. Sometimes, the symmetric key used for this (DEK) is further protected by encrypting it with an asymmetric key (KEK).</p>
+                        <p class="text-gray-600"><span class="font-semibold">Example:</span> Encrypting your game's configuration files or saved progress on your device.</p>
+                    </div>
+
+                    <div id="contentTransit" class="tab-content p-4 bg-gray-50 rounded-lg hidden">
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800">↔️ Data in Transit Encryption</h3>
+                        <p class="text-gray-600 mb-2">This is data moving between locations, such as from your device to a game server (e.g., login credentials, in-game actions, chat messages) or between servers.</p>
+                        <p class="text-gray-600 mb-2"><span class="font-semibold">Why it's important:</span> Data travelling over networks (especially the internet) can be intercepted. Encryption protects it during this journey.</p>
+                        <p class="text-gray-600 mb-2"><span class="font-semibold">How it works:</span> Protocols like TLS (Transport Layer Security) / SSL (Secure Sockets Layer) create a secure, encrypted channel. This often involves an initial handshake using asymmetric keys (like RSA or ECC) to securely exchange a symmetric key (like AES) which is then used for encrypting the actual data flow due to its efficiency.</p>
+                        <p class="text-gray-600"><span class="font-semibold">Example:</span> When you log into a game, your password is encrypted before being sent to the server. HTTPS for game websites is a common application.
+                        <div class="mt-4 p-3 bg-white rounded border border-gray-200 text-sm">
+                            <p class="font-medium text-gray-700 mb-1">Simplified TLS Handshake & Data Flow:</p>
+                            <div class="flex flex-col items-center space-y-1 text-xs text-gray-600">
+                                <span>Your Device (Client) 🖥️</span>
+                                <span class="text-blue-500 font-bold">&nbsp;&nbsp;↕ Asymmetric Key Exchange (e.g., RSA/ECC) to agree on Session Key&nbsp;&nbsp;</span>
+                                <span>Game Server ☁️</span>
+                                <span class="text-blue-500 font-bold">&nbsp;&nbsp;↔ Encrypted Data Transfer using Symmetric Session Key (e.g., AES)&nbsp;&nbsp;</span>
+                                <span>(Secure Channel Established)</span>
+                            </div>
+                        </div>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-sky-50 p-6 rounded-lg">
+                    <h3 class="text-2xl font-semibold mb-4 text-sky-700 text-center">Critical Role of Key Management</h3>
+                    <p class="text-gray-700 leading-relaxed mb-2">
+                       Encryption is only as strong as the secrecy of its keys. Effective Key Management involves the entire lifecycle:
+                    </p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                        <li><span class="font-semibold">Generation:</span> Creating strong, random keys.</li>
+                        <li><span class="font-semibold">Storage:</span> Protecting keys from unauthorized access (e.g., using hardware security modules or KEKs).</li>
+                        <li><span class="font-semibold">Distribution:</span> Securely sharing keys where necessary.</li>
+                        <li><span class="font-semibold">Usage:</span> Applying keys correctly according to defined policies.</li>
+                        <li><span class="font-semibold">Rotation & Revocation:</span> Regularly changing keys (defining cryptoperiods) and deactivating compromised ones.</li>
+                    </ul>
+                    <p class="text-gray-700 leading-relaxed mt-2 text-sm">
+                        NIST (National Institute of Standards and Technology) provides extensive guidelines for secure key management. SecureGamer adheres to these best practices.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="importance" class="mb-16 pt-16 -mt-16">
+            <div class="card p-6 md:p-8">
+                <h2 class="text-3xl font-bold mb-8 section-title text-center">Why Encryption is Non-Negotiable in Gaming</h2>
+                <p class="text-gray-700 leading-relaxed mb-6 text-center">Data encryption isn't just a "nice-to-have"; it's a fundamental pillar for security, privacy, and trust in the online gaming world. Its importance spans multiple critical areas:</p>
+                
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="order-2 md:order-1">
+                        <ul class="space-y-4 text-gray-700">
+                            <li><strong class="text-blue-600">🛡️ Protecting Sensitive Information:</strong> Encrypts player credentials, financial data, and personal details, safeguarding against breaches and identity theft.</li>
+                            <li><strong class="text-blue-600">⚖️ Ensuring Transactional Integrity:</strong> Secures financial transactions and in-game asset transfers, preventing fraud.</li>
+                            <li><strong class="text-blue-600">🎮 Maintaining Fair Play:</strong> Prevents manipulation of game data and protects private communications between players.</li>
+                            <li><strong class="text-blue-600">📜 Regulatory Compliance:</strong> Helps meet strict data protection laws (like GDPR, CCPA), avoiding hefty fines.</li>
+                            <li><strong class="text-blue-600">⚔️ Mitigating Cyber Threats:</strong> Acts as a primary defense against ransomware, hacking, and other attacks.</li>
+                            <li><strong class="text-blue-600">🤝 Building Trust & Credibility:</strong> Assures players their data is safe, fostering loyalty and a positive reputation for game platforms and services like SecureGamer.</li>
+                        </ul>
+                    </div>
+                    <div class="order-1 md:order-2 chart-container">
+                        <canvas id="encryptionImportanceChart"></canvas>
+                        <p class="text-center text-xs text-gray-500 mt-2">Illustrative impact areas of encryption in gaming.</p>
+                    </div>
+                </div>
+                <p class="text-center text-gray-700 mt-8 leading-relaxed">
+                    Given the rising value of digital assets and increasing cyber threats, robust encryption is essential for the entire gaming ecosystem's health and sustainability. SecureGamer is committed to these principles.
+                </p>
+            </div>
+        </section>
+
+        <section id="ai-learning" class="mb-16 pt-16 -mt-16">
+            <div class="card p-6 md:p-8">
+                <h2 class="text-3xl font-bold mb-8 section-title text-center">✨ AI-Powered Learning & Scenarios ✨</h2>
+                <p class="text-gray-700 leading-relaxed mb-6 text-center">
+                    Dive deeper into cryptography with our AI assistant! Get simplified explanations of complex terms or explore how security principles apply to real-world gaming scenarios.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-blue-50 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-700">Crypto Term Explainer ✨</h3>
+                        <p class="text-gray-600 mb-3 text-sm">Enter a cryptographic term (e.g., "AES", "Hashing", "TLS") to get a simplified explanation.</p>
+                        <input type="text" id="termInput" class="w-full p-2 border border-blue-200 rounded-md focus:ring-blue-500 focus:border-blue-500 mb-3" placeholder="Enter a term...">
+                        <button id="explainTermButton" class="llm-button flex items-center justify-center mx-auto">
+                            Explain Term
+                            <span id="explainTermSpinner" class="loading-spinner"></span>
+                        </button>
+                        <div id="termOutput" class="llm-output text-gray-800 mt-4"></div>
+                    </div>
+
+                    <div class="bg-purple-50 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-xl font-semibold mb-4 text-purple-700">Gaming Security Scenario Creator ✨</h3>
+                        <p class="text-gray-600 mb-3 text-sm">Describe a gaming activity (e.g., "trading items in an MMO", "voice chat in a competitive shooter") to see how cryptography secures it.</p>
+                        <textarea id="scenarioInput" class="w-full p-2 border border-purple-200 rounded-md focus:ring-purple-500 focus:border-purple-500 mb-3" rows="3" placeholder="Describe a gaming activity..."></textarea>
+                        <button id="generateScenarioButton" class="llm-button flex items-center justify-center mx-auto">
+                            Generate Scenario
+                            <span id="generateScenarioSpinner" class="loading-spinner"></span>
+                        </button>
+                        <div id="scenarioOutput" class="llm-output text-gray-800 mt-4"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-8 bg-gray-800 text-gray-400 text-sm">
+        <p>&copy; 2024 SecureGamer Platform. Information based on "SecureGamer: Cryptographic Principles and Data Protection" report.</p>
+        <p>This interactive guide is for educational purposes.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const navbarHeight = document.getElementById('navbar').offsetHeight;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            });
+        });
+
+        const sections = document.querySelectorAll("section");
+        const navLinks = document.querySelectorAll("nav a");
+        const navbarHeight = document.getElementById('navbar').offsetHeight;
+
+        window.onscroll = () => {
+            let current = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop - navbarHeight - 50;
+                if (pageYOffset >= sectionTop) {
+                    current = section.getAttribute("id");
+                }
+            });
+
+            navLinks.forEach((link) => {
+                link.classList.remove("active");
+                if (link.getAttribute("href").includes(current)) {
+                    link.classList.add("active");
+                }
+            });
+        };
+
+        function showTab(tabName) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+            document.getElementById('content' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.remove('hidden');
+
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active', 'border-blue-500', 'text-blue-600'));
+            buttons.forEach(button => button.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300'));
+            
+            const activeButton = document.getElementById('tabBtn' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
+            activeButton.classList.add('active', 'border-blue-500', 'text-blue-600');
+            activeButton.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+        }
+        showTab('rest');
+
+        function toggleDetails(elementId) {
+            const element = document.getElementById(elementId);
+            element.classList.toggle('open');
+        }
+
+        const importanceCtx = document.getElementById('encryptionImportanceChart').getContext('2d');
+        
+        function wrapChartLabels(label, maxWidth) {
+            if (typeof label !== 'string') return label; 
+            const words = label.split(' ');
+            let currentLine = '';
+            const lines = [];
+            words.forEach(word => {
+                if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const importanceChartLabels = [
+            'Player Info Protection', 
+            'Transaction Integrity', 
+            'Fair Play & Game Integrity', 
+            'Regulatory Compliance', 
+            'Cyber Threat Mitigation', 
+            'Building Trust'
+        ].map(label => wrapChartLabels(label, 16));
+
+        const importanceChart = new Chart(importanceCtx, {
+            type: 'doughnut',
+            data: {
+                labels: importanceChartLabels,
+                datasets: [{
+                    label: 'Importance of Encryption',
+                    data: [20, 15, 15, 15, 20, 15],
+                    backgroundColor: [
+                        '#007BFF',
+                        '#17A2B8',
+                        '#28A745',
+                        '#FFC107',
+                        '#DC3545',
+                        '#6C757D'
+                    ],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 10
+                            },
+                            padding: 10,
+                            boxWidth: 12
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                }
+                                return label;
+                            },
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '% (Illustrative)';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const explainTermButton = document.getElementById('explainTermButton');
+        const termInput = document.getElementById('termInput');
+        const termOutput = document.getElementById('termOutput');
+        const explainTermSpinner = document.getElementById('explainTermSpinner');
+
+        const generateScenarioButton = document.getElementById('generateScenarioButton');
+        const scenarioInput = document.getElementById('scenarioInput');
+        const scenarioOutput = document.getElementById('scenarioOutput');
+        const generateScenarioSpinner = document.getElementById('generateScenarioSpinner');
+
+        async function callGeminiAPI(prompt, outputElement, spinnerElement) {
+            outputElement.textContent = 'Generating...';
+            spinnerElement.style.display = 'inline-block';
+
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    outputElement.textContent = text;
+                } else {
+                    outputElement.textContent = 'Error: Could not get a valid response from the API. Please try a different query.';
+                }
+            } catch (error) {
+                outputElement.textContent = `Error: ${error.message}. Please check your input or try again later.`;
+            } finally {
+                spinnerElement.style.display = 'none';
+            }
+        }
+
+        explainTermButton.addEventListener('click', () => {
+            const term = termInput.value.trim();
+            if (term) {
+                const prompt = `Explain the cryptographic term "${term}" in simple, easy-to-understand language, suitable for a gamer. Focus on its core concept and how it relates to digital security.`;
+                callGeminiAPI(prompt, termOutput, explainTermSpinner);
+            } else {
+                termOutput.textContent = 'Please enter a term to explain.';
+            }
+        });
+
+        generateScenarioButton.addEventListener('click', () => {
+            const activity = scenarioInput.value.trim();
+            if (activity) {
+                const prompt = `Generate a short, realistic scenario for a gamer performing the activity "${activity}". In the scenario, briefly explain how cryptographic principles or keys would be involved in securing that activity.`;
+                callGeminiAPI(prompt, scenarioOutput, generateScenarioSpinner);
+            } else {
+                scenarioOutput.textContent = 'Please describe a gaming activity to generate a scenario.';
+            }
+        });
+    </script>
+</body>
+</html>
