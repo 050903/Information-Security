@@ -1,6 +1,7 @@
 # Information-Security
 ## Projects
-
+# Chart flow life cycle of project 
+![image](https://github.com/user-attachments/assets/cc5dfb4a-6fd2-4ec6-949b-9b2fbbad1642)
 
 # ANALYZE RATIO – PRIVACY POLICY
 ![image](https://github.com/user-attachments/assets/240daefb-bdd1-4ba0-83ee-1599edcb949b)
